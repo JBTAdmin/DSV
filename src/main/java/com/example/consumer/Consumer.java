@@ -18,7 +18,7 @@ public class Consumer {
   public void consume(Game game) {
     str.append(game.getGameName());
     if (i % 50000 == 0) {
-      log.info("GAMES NAME -> " + str);
+      //      log.info("GAMES NAME -> " + str);
     }
     i++;
   }

@@ -1,5 +1,6 @@
 package com.example.producer;
 
+import static com.example.constants.Constant.FILE_LOCATION;
 import static com.example.constants.Constant.TOPIC_GAME;
 
 import com.example.message.Game;
@@ -7,9 +8,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.KafkaTemplate;
 
@@ -19,16 +21,15 @@ import org.springframework.kafka.core.KafkaTemplate;
 public class Producer {
   private final KafkaTemplate<String, Game> kafkaTemplate;
 
-  @Value("${file.location}")
-  String path;
-
   public Producer(KafkaTemplate<String, Game> kafkaTemplate) {
     this.kafkaTemplate = kafkaTemplate;
   }
 
+  @SneakyThrows
   public String sendMessageFromCSV() {
 
-    Path filePath = Paths.get(path);
+    ClassPathResource cpr = new ClassPathResource(FILE_LOCATION);
+    Path filePath = Paths.get(cpr.getURL().getPath());
 
     int[] i = {0};
     try (Stream<String> lines = Files.lines(filePath)) {
