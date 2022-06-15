@@ -20,24 +20,34 @@ public class Producer {
     this.kafkaTemplate = kafkaTemplate;
   }
 
-  public void sendMessageFromCSV(){
+  public String sendMessageFromCSV() {
 
-    String path = "/Users/vivekanandgautam/Gautam/Workspace/IdeaWorkspace/KStream-DSV/src/main/resources/data/steam-200k.csv";
+    String path =
+        "/Users/vivekanandgautam/Gautam/Workspace/IdeaWorkspace/KStream-DSV/src/main/resources/data/steam-200k.csv";
     Path filePath = Paths.get(path);
 
     int[] i = {0};
     try (Stream<String> lines = Files.lines(filePath)) {
-      lines.forEach(t -> {
-        String[] game = t.split(",");
+      lines.forEach(
+          t -> {
+            String[] game = t.split(",");
 
-        kafkaTemplate.send(TOPIC_GAME, Game.builder().id(game[0]).gameName(game[1]).behaviour(game[2]).playPurchase(game[3]).build());
-        i[0]++;
-        if(i[0] % 50000 ==0){
-          System.out.println("50000 Records sent in Kafka");
-        }
-      });
+            kafkaTemplate.send(
+                TOPIC_GAME,
+                Game.builder()
+                    .id(game[0])
+                    .gameName(game[1])
+                    .behaviour(game[2])
+                    .playPurchase(game[3])
+                    .build());
+            i[0]++;
+            if (i[0] % 50000 == 0) {
+              System.out.println("50000 Records sent in Kafka");
+            }
+          });
     } catch (Exception e) {
       e.printStackTrace();
     }
+    return "MESSAGE SENT";
   }
 }

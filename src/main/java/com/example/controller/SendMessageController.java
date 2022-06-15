@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class SendMessageController {
 
-  private Producer producer;
+  private final Producer producer;
 
   public SendMessageController(Producer producer) {
     this.producer = producer;
@@ -19,8 +19,7 @@ public class SendMessageController {
 
   @GetMapping("send")
   @ResponseStatus(HttpStatus.OK)
-  public String postMessage(){
-    producer.sendMessageFromCSV();
-    return "MESSAGE SENT";
+  public String postMessage() {
+    return producer.sendMessageFromCSV();
   }
 }
