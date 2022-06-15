@@ -8,6 +8,7 @@ import com.example.constants.GameAction;
 import com.example.message.Game;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Printed;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -24,7 +25,7 @@ public class Stream {
     stream
         .filter((key, value) -> GameAction.PLAY.name().equalsIgnoreCase(value.getBehaviour()))
         .to(TOPIC_GAME_PLAY);
-//    stream.print(Printed.toSysOut());
+    stream.print(Printed.toSysOut());
     return stream;
   }
 
