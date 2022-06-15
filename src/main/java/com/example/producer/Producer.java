@@ -1,5 +1,7 @@
 package com.example.producer;
 
+import static com.example.constants.Constant.TOPIC_GAME;
+
 import com.example.message.Game;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,10 +30,10 @@ public class Producer {
       lines.forEach(t -> {
         String[] game = t.split(",");
 
-        kafkaTemplate.send("FIRST_6", Game.builder().id(game[0]).gameName(game[1]).behaviour(game[2]).playPurchase(game[3]).build());
+        kafkaTemplate.send(TOPIC_GAME, Game.builder().id(game[0]).gameName(game[1]).behaviour(game[2]).playPurchase(game[3]).build());
         i[0]++;
-        if(i[0] % 10000 ==0){
-          System.out.println("100 Records sent in Kafka");
+        if(i[0] % 50000 ==0){
+          System.out.println("50000 Records sent in Kafka");
         }
       });
     } catch (Exception e) {
